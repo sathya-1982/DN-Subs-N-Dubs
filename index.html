@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Digital Nirvana's Subs N Dubs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #0d1117;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+h1 { color: #58a6ff; }
+.upload-box {
+    border: 2px dashed #58a6ff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+video {
+    width: 45%;
+    margin: 10px;
+    border: 2px solid #58a6ff;
+    border-radius: 10px;
+}
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: #58a6ff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover { background: #1f6feb; }
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Digital Nirvana's Subs N Dubs</h1>
+
+<div class="upload-box">
+    <h2>Upload Original Video</h2>
+    <input type="file" id="original" accept="video/*">
+</div>
+
+<div class="upload-box">
+    <h2>Upload Dubbed Video</h2>
+    <input type="file" id="dubbed" accept="video/*">
+</div>
+
+<div class="row">
+    <video id="originalPlayer" controls></video>
+    <video id="dubbedPlayer" controls></video>
+</div>
+
+<br>
+
+<button onclick="playBoth()">Play Both</button>
+<button onclick="pauseBoth()">Pause</button>
+<button onclick="originalOnly()">Hear Original Only</button>
+<button onclick="dubbedOnly()">Hear Dubbed Only</button>
+<button onclick="bothAudio()">Hear Both</button>
+
+<script>
+const original = document.getElementById("original");
+const dubbed = document.getElementById("dubbed");
+const origPlayer = document.getElementById("originalPlayer");
+const dubPlayer = document.getElementById("dubbedPlayer");
+
+original.onchange = () => {
+    origPlayer.src = URL.createObjectURL(original.files[0]);
+};
+
+dubbed.onchange = () => {
+    dubPlayer.src = URL.createObjectURL(dubbed.files[0]);
+};
+
+function playBoth() {
+    origPlayer.play();
+    dubPlayer.play();
+}
+
+function pauseBoth() {
+    origPlayer.pause();
+    dubPlayer.pause();
+}
+
+function originalOnly() {
+    origPlayer.muted = false;
+    dubPlayer.muted = true;
+}
+
+function dubbedOnly() {
+    origPlayer.muted = true;
+    dubPlayer.muted = false;
+}
+
+function bothAudio() {
+    origPlayer.muted = false;
+    dubPlayer.muted = false;
+}
+</script>
+
+</body>
+</html>
