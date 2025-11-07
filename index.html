@@ -22,37 +22,22 @@ dubbed.onchange = () => {
     }
 };
 
+// Play both videos muted initially (browsers block autoplay if not muted)
 function playBoth() {
-    // browsers block unmuted autoplay — mute first, then unmute after play
     origPlayer.muted = true;
     dubPlayer.muted = true;
 
     origPlayer.play().then(() => {
-        dubPlayer.play().then(() => {
-            // after playing, unmute based on user choice
-        });
-    }).catch(err => console.log("Autoplay blocked:", err));
+        dubPlayer.play().catch(err => console.log("Dubbed autoplay blocked:", err));
+    }).catch(err => console.log("Original autoplay blocked:", err));
 }
 
+// Pause both videos
 function pauseBoth() {
     origPlayer.pause();
     dubPlayer.pause();
 }
 
+// Play only original audio
 function originalOnly() {
-    origPlayer.muted = false;
-    dubPlayer.muted = true;
-    if (origPlayer.paused) origPlayer.play();
-}
-
-function dubbedOnly() {
-    origPlayer.muted = true;
-    dubPlayer.muted = false;
-    if (dubPlayer.paused) dubPlayer.play();
-}
-
-function bothAudio() {
-    origPlayer.muted = false;
-    dubPlayer.muted = false;
-}
-</script>
+    origPlayer.muted = fals
