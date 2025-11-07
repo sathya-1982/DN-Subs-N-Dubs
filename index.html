@@ -1,3 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DN Subs & Dubs</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    text-align: center;
+  }
+  video {
+    width: 45%;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  .controls {
+    margin: 15px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>DN Subs & Dubs</h1>
+
+<input type="file" id="original" accept="video/*">
+<input type="file" id="dubbed" accept="video/*"><br><br>
+
+<video id="originalPlayer" controls></video>
+<video id="dubbedPlayer" controls></video>
+
+<div class="controls">
+  <button onclick="playBoth()">Play Both</button>
+  <button onclick="pauseBoth()">Pause Both</button>
+  <button onclick="originalOnly()">Original Only</button>
+  <button onclick="dubbedOnly()">Dubbed Only</button>
+  <button onclick="bothAudio()">Both Audio</button>
+</div>
+
 <script>
 const original = document.getElementById("original");
 const dubbed = document.getElementById("dubbed");
@@ -22,11 +63,10 @@ dubbed.onchange = () => {
     }
 };
 
-// Play both videos muted initially (browsers block autoplay if not muted)
+// Play both videos muted initially to bypass autoplay restrictions
 function playBoth() {
     origPlayer.muted = true;
     dubPlayer.muted = true;
-
     origPlayer.play().then(() => {
         dubPlayer.play().catch(err => console.log("Dubbed autoplay blocked:", err));
     }).catch(err => console.log("Original autoplay blocked:", err));
@@ -38,6 +78,45 @@ function pauseBoth() {
     dubPlayer.pause();
 }
 
-// Play only original audio
+// Original audio only
 function originalOnly() {
-    origPlayer.muted = fals
+    origPlayer.muted = false;
+    dubPlayer.muted = true;
+    if (origPlayer.paused) origPlayer.play();
+}
+
+// Dubbed audio only
+function dubbedOnly() {
+    origPlayer.muted = true;
+    dubPlayer.muted = false;
+    if (dubPlayer.paused) dubPlayer.play();
+}
+
+// Both audios
+function bothAudio() {
+    origPlayer.muted = false;
+    dubPlayer.muted = false;
+}
+
+// --- Sync dubbed video with original ---
+function syncDubbed() {
+    dubPlayer.currentTime = origPlayer.currentTime;
+}
+
+origPlayer.addEventListener("pause", () => {
+    syncDubbed();
+    dubPlayer.pause();
+});
+
+origPlayer.addEventListener("play", () => {
+    syncDubbed();
+    dubPlayer.play();
+});
+
+origPlayer.addEventListener("seeking", () => {
+    syncDubbed();
+});
+</script>
+
+</body>
+</html>
