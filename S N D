@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Digital Nirvana's Subs N Dubs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background: #0d0d0d;
+  color: #f2f2f2;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #00e0ff;
+}
+p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+video {
+  width: 45%;
+  max-width: 600px;
+  background: black;
+  border-radius: 10px;
+  outline: 2px solid #333;
+}
+button {
+  padding: 10px 20px;
+  margin: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #00e0ff;
+  color: #000;
+}
+button:hover {
+  background: #66f2ff;
+}
+.file-input {
+  margin-bottom: 25px;
+  font-size: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Digital Nirvana's Subs N Dubs</h1>
+<p>Compare Original vs Dubbed audio instantly. Upload any two videos and switch audio live.</p>
+
+<div>
+  <div class="file-input">
+    <b>Original Video:</b><br>
+    <input type="file" id="origInput" accept="video/*">
+  </div>
+  <div class="file-input">
+    <b>Dubbed Video:</b><br>
+    <input type="file" id="dubInput" accept="video/*">
+  </div>
+</div>
+
+<div class="container">
+  <video id="origVid" controls muted playsinline></video>
+  <video id="dubVid" controls muted playsinline></video>
+</div>
+
+<br>
+
+<button id="playBoth">▶ Play Both</button>
+<button id="onlyOrig">🎤 Hear ONLY Original</button>
+<button id="onlyDub">🎧 Hear ONLY Dubbed</button>
+<button id="hearBoth">🔊 Hear BOTH</button>
+
+<script>
+let origVid = document.getElementById('origVid');
+let dubVid = document.getElementById('dubVid');
+
+document.getElementById('origInput').addEventListener('change', function(e){
+  origVid.src = URL.createObjectURL(e.target.files[0]);
+  origVid.load();
+});
+
+document.getElementById('dubInput').addEventListener('change', function(e){
+  dubVid.src = URL.createObjectURL(e.target.files[0]);
+  dubVid.load();
+});
+
+// Ensure playback works on all browsers after user click
+document.getElementById('playBoth').onclick = () => {
+  origVid.muted = true;
+  dubVid.muted = true;
+  origVid.play();
+  dubVid.play();
+};
+
+// Audio switching
+document.getElementById('onlyOrig').onclick = () => {
+  origVid.muted = false;
+  dubVid.muted = true;
+  origVid.play();
+  dubVid.play();
+};
+
+document.getElementById('onlyDub').onclick = () => {
+  origVid.muted = true;
+  dubVid.muted = false;
+  origVid.play();
+  dubVid.play();
+};
+
+document.getElementById('hearBoth').onclick = () => {
+  origVid.muted = false;
+  dubVid.muted = false;
+  origVid.play();
+  dubVid.play();
+};
+</script>
+
+</body>
+</html>
